@@ -1,0 +1,22 @@
+version: '1'
+services: 
+    db:
+      image: mysql
+      container_name: mysql-container
+      restart: always
+      ports:
+        - "3306:3306"
+      environment:
+        MYSQL_ROOT_PASSWORD: password
+      volumes:
+        - /var/lib/docker/volumes/mysql-db/_data:/var/lib/mysql
+    backend:
+        build: .
+        depends_on:
+            - db
+        ports:
+            - "3000:3000"
+        restart: always
+        container_name: picpay-challenge
+        env_file:
+            - .env
